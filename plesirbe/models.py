@@ -8,6 +8,7 @@ class Travel(models.Model):
     city = models.CharField(max_length=255)
     price = models.FloatField()
     hour = models.IntegerField()
+    rating = models.IntegerField(null=True)
 
     def __str__(self):
         return self.place_name
