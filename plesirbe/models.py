@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Travel(models.Model):
+class Destination(models.Model):
     place_name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
