@@ -24,7 +24,6 @@ def main():
                 rating=int(row['Rating'])
             )
             travel.save()
-            print("Success ", travel.place_name)
 
 
 if __name__ == "__main__":
