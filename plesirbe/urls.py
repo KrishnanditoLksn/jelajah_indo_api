@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from plesirbe.views import DestinationListApi, plesir_base_url
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("destination/", DestinationListApi.as_view()),
+    path("", plesir_base_url)
 ]
