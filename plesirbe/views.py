@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from plesirbe.destination_recommender import get_similar_destinations
 from plesirbe.models import Destination
 from plesirbe.serializer import DestinationSerializer
 
@@ -19,4 +20,20 @@ def list_of_destinations(self):
     """Return JSON Response that consist list of destination """
     return Response({
         'destination': serializer.data
+    })
+
+
+# class DestinationDetail(APIView):
+#
+@api_view(['GET'])
+def destination_detail(self, ids):
+    destination = Destination.objects.get(id=ids)
+    serializer = DestinationSerializer(destination)
+    sim_dest = get_similar_destinations(ids, 5)
+    sim_destinations_serializer = DestinationSerializer(sim_dest , many=True)
+
+    """Return JSON Response that consist detail destination """
+    return Response({
+        'destination': serializer.data,
+        'recommendations': sim_destinations_serializer.data
     })
