@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from plesirbe.views import plesir_base_url, list_of_destinations
+from plesirbe.views import plesir_base_url, list_of_destinations, destination_detail
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("destination/", list_of_destinations),
-    path("", plesir_base_url)
+    path("", plesir_base_url),
+    path("destination/<int:ids>/", destination_detail)
 ]
