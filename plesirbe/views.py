@@ -1,3 +1,4 @@
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -27,13 +28,19 @@ def list_of_destinations(self):
 #
 @api_view(['GET'])
 def destination_detail(self, ids):
-    destination = Destination.objects.get(id=ids)
-    serializer = DestinationSerializer(destination)
-    sim_dest = get_similar_destinations(ids, 5)
-    sim_destinations_serializer = DestinationSerializer(sim_dest , many=True)
+    try:
+        destination = Destination.objects.get(id=ids)
+        serializer = DestinationSerializer(destination)
+        sim_dest = get_similar_destinations(ids, 5)
+        sim_destinations_serializer = DestinationSerializer(sim_dest, many=True)
 
-    """Return JSON Response that consist detail destination """
-    return Response({
-        'destination': serializer.data,
-        'recommendations': sim_destinations_serializer.data
-    })
+        """Return JSON Response that consist detail destination """
+        return Response({
+            'destination': serializer.data,
+            'recommendations': sim_destinations_serializer.data
+        })
+
+    except Destination.DoesNotExist:
+        return Response({
+            'Message': "Item Not Found !!!"
+        }, status=status.HTTP_404_NOT_FOUND)
