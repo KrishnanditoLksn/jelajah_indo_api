@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
-from plesirbe.views import plesir_base_url, list_of_destinations, destination_detail
+from plesirbe.views import plesir_base_url, list_of_destinations, destination_detail, recommend_destination
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -17,6 +17,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("destination/", list_of_destinations),
+    path("recommend/<int:ids>", recommend_destination),
     path("", plesir_base_url),
     path("destination/<int:ids>/", destination_detail),
 
