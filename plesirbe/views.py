@@ -31,15 +31,26 @@ def destination_detail(self, ids):
     try:
         destination = Destination.objects.get(id=ids)
         serializer = DestinationSerializer(destination)
-        sim_dest = get_similar_destinations(ids, 5)
-        sim_destinations_serializer = DestinationSerializer(sim_dest, many=True)
 
         """Return JSON Response that consist detail destination """
         return Response({
-            'destination': serializer.data,
-            'recommendations': sim_destinations_serializer.data
+            'destination': serializer.data
         })
 
+    except Destination.DoesNotExist:
+        return Response({
+            'Message': "Item Not Found !!!"
+        }, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def recommend_destination(self, ids):
+    try:
+        sim_dest = get_similar_destinations(ids, 5)
+        sim_destinations_serializer = DestinationSerializer(sim_dest, many=True)
+        return Response({
+            'recommendation': sim_destinations_serializer.data
+        })
     except Destination.DoesNotExist:
         return Response({
             'Message': "Item Not Found !!!"
