@@ -44,3 +44,27 @@ def destination_detail(self, ids):
         return Response({
             'Message': "Item Not Found !!!"
         }, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def search_destination(request):
+    query = request.query_params.get('query', None)
+
+    if not query:
+        return Response(
+            {'message': 'Query parameter is required.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    destinations = Destination.objects.filter(place_name__icontains=query)
+
+    if not destinations.exists():
+        return Response(
+            {'message': 'Item not found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = DestinationSerializer(destinations, many=True)
+    return Response({
+        'Destination': serializer.data
+    }, status=status.HTTP_200_OK)
