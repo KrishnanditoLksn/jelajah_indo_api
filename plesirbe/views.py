@@ -31,10 +31,13 @@ def destination_detail(self, ids):
     try:
         destination = Destination.objects.get(id=ids)
         serializer = DestinationSerializer(destination)
+        sim_dest = get_similar_destinations(ids, 5)
+        sim_destinations_serializer = DestinationSerializer(sim_dest, many=True)
 
         """Return JSON Response that consist detail destination """
         return Response({
-            'destination': serializer.data
+            'destination': serializer.data,
+            'recommendations': sim_destinations_serializer.data
         })
 
     except Destination.DoesNotExist:
@@ -44,14 +47,24 @@ def destination_detail(self, ids):
 
 
 @api_view(['GET'])
-def recommend_destination(self, ids):
-    try:
-        sim_dest = get_similar_destinations(ids, 5)
-        sim_destinations_serializer = DestinationSerializer(sim_dest, many=True)
-        return Response({
-            'recommendation': sim_destinations_serializer.data
-        })
-    except Destination.DoesNotExist:
-        return Response({
-            'Message': "Item Not Found !!!"
-        }, status=status.HTTP_404_NOT_FOUND)
+def search_destination(request):
+    query = request.query_params.get('query', None)
+
+    if not query:
+        return Response(
+            {'message': 'Query parameter is required.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    destinations = Destination.objects.filter(place_name__icontains=query)
+
+    if not destinations.exists():
+        return Response(
+            {'message': 'Item not found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    serializer = DestinationSerializer(destinations, many=True)
+    return Response({
+        'Destination': serializer.data
+    }, status=status.HTTP_200_OK)
