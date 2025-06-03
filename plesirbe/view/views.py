@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from plesirbe.destination_recommender import get_similar_destinations
-from plesirbe.models import Destination
+from plesirbe.recommender.destination_recommender import get_similar_destinations
+from plesirbe.model.destination import Destination
 from plesirbe.serializer import DestinationSerializer
 
 
