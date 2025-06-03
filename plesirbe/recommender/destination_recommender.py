@@ -3,7 +3,7 @@ import logging
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from plesirbe.models import Destination
+from plesirbe.model.destination import Destination
 logger = logging.getLogger(__name__)
 
 def get_similar_destinations(dest_id, top_n=5):
