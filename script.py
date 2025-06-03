@@ -7,7 +7,7 @@ import django
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'plesirbe.settings')
     django.setup()
-    from plesirbe.models import Destination
+    from plesirbe.model.destination import Destination
     file_path = "destinasi.csv"
     with open(file_path, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from plesirbe.models import Destination
+from plesirbe.model.destination import Destination
 
 
 class DestinationSerializer(serializers.ModelSerializer):

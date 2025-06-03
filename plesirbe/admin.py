@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from plesirbe.models import Destination
+from plesirbe.model.destination import Destination
 
 admin.site.register(Destination)

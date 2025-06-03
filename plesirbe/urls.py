@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
-from plesirbe.views import plesir_base_url, list_of_destinations, destination_detail, search_destination
+from plesirbe.view.views import plesir_base_url, list_of_destinations, destination_detail, search_destination
 
 schema_view = get_schema_view(
     openapi.Info(
