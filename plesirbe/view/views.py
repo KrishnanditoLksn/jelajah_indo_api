@@ -2,10 +2,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from plesirbe.recommender.destination_recommender import get_similar_destinations
 from plesirbe.models.destination import Destination
+from plesirbe.pagination.small_result_pagination import SmallResultsSetPagination
+from plesirbe.recommender.destination_recommender import get_similar_destinations
 from plesirbe.serializer import DestinationSerializer
-
+from rest_framework.pagination import LimitOffsetPagination
 
 @api_view(['GET'])
 def plesir_base_url(self):
@@ -24,8 +25,15 @@ def list_of_destinations(self):
     })
 
 
-# class DestinationDetail(APIView):
-#
+@api_view(['GET'])
+def paginated_destination_list(request):
+    queryset = Destination.objects.all()
+    paginator = LimitOffsetPagination()
+    paginated_queryset = paginator.paginate_queryset(queryset, request)
+    serializer = DestinationSerializer(paginated_queryset, many=True)
+    return paginator.get_paginated_response(serializer.data)
+
+
 @api_view(['GET'])
 def destination_detail(self, ids):
     try:
