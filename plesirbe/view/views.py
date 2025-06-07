@@ -3,7 +3,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from plesirbe.models.destination import Destination
-from plesirbe.pagination.small_result_pagination import SmallResultsSetPagination
 from plesirbe.recommender.destination_recommender import get_similar_destinations
 from plesirbe.serializer import DestinationSerializer
 from rest_framework.pagination import LimitOffsetPagination
