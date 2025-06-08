@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from plesirbe.models.destination import Destination
-from plesirbe.recommender.destination_recommender import get_similar_destinations
+from plesirbe.recommender.destination_recommender import get_cosine_sim_score, get_similar_destinations
 from plesirbe.serializer import DestinationSerializer
 from rest_framework.pagination import LimitOffsetPagination
 
@@ -39,8 +39,13 @@ def destination_detail(self, ids):
         destination = Destination.objects.get(id=ids)
         serializer = DestinationSerializer(destination)
         sim_dest = get_similar_destinations(ids, 5)
+        cosine_score = get_cosine_sim_score(ids,5)
         sim_destinations_serializer = DestinationSerializer(sim_dest, many=True)
-
+        sim_datas = sim_destinations_serializer.data
+        
+        for item , score in zip(sim_datas,cosine_score):
+            item['score'] = round(score,4)
+        
         """Return JSON Response that consist detail destination """
         return Response({
             'destination': serializer.data,
